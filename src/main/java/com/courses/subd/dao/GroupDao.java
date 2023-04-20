@@ -34,21 +34,20 @@ public class GroupDao {
     }
 
     public Group findByName(String name){
-        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("name", name);
-        return namedParameterJdbcTemplate.queryForObject(
-                "SELECT * FROM STUDENT_GROUP WHERE NAME = :name", namedParameters, Group.class);
+        final String query = "SELECT * FROM STUDENTGROUP WHERE NAME = ?";
+        return jdbcTemplate.queryForObject(query, new Object[] { name }, new GroupRowMapper());
     }
 
     public int getCountOfGroups() {
-        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM STUDENT_GROUP", Integer.class);
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM STUDENTGROUP", Integer.class);
     }
 
     public List<Group> getAllGroups() {
-        return jdbcTemplate.query("SELECT * FROM STUDENT_GROUP", new GroupRowMapper());
+        return jdbcTemplate.query("SELECT * FROM STUDENTGROUP", new GroupRowMapper());
     }
 
     public int addGroup(Group group) {
-        return jdbcTemplate.update("INSERT INTO STUDENT_GROUP VALUES (?, ?, ?)", group.getGroupId(),
+        return jdbcTemplate.update("INSERT INTO STUDENTGROUP VALUES (?, ?)", group.getGroupId(),
                 group.getName());
     }
 }

@@ -21,7 +21,4 @@ public class Group {
     @Column(name = "NAME")
     private String name;
 
-    @OneToOne(mappedBy = "studentGroup")
-    private Student studentId;
-
 }

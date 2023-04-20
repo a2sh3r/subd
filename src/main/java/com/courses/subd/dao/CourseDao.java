@@ -35,9 +35,8 @@ public class CourseDao {
     }
 
     public Course findByName(String name){
-        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("name", name);
-        return namedParameterJdbcTemplate.queryForObject(
-                "SELECT * FROM COURSE WHERE NAME = :name", namedParameters, Course.class);
+        final String query = "SELECT * FROM COURSE WHERE NAME = ?";
+        return jdbcTemplate.queryForObject(query, new Object[] { name }, new CourseRowMapper());
     }
 
     public int getCountOfCourses() {
@@ -49,7 +48,7 @@ public class CourseDao {
     }
 
     public int addCourse(Course course) {
-        return jdbcTemplate.update("INSERT INTO COURSE VALUES (?, ?, ?)", course.getCourseId(),
+        return jdbcTemplate.update("INSERT INTO COURSE VALUES (?, ?)", course.getCourseId(),
                 course.getName());
     }
 

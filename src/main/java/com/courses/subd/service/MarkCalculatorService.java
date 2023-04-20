@@ -30,8 +30,8 @@ public class MarkCalculatorService {
     public Double CalculateMean(String courseName, String groupName){
         Long courseId = courseDao.findByName(courseName).getCourseId();
         Long groupId = groupDao.findByName(groupName).getGroupId();
-        List<Student> students = studentDao.findByCourseAndGroup(courseId, groupId);
-        return students.stream().map(Student::getMark).map(Integer::doubleValue)
+        List<Integer> students = studentDao.findByCourseAndGroup(courseId, groupId);
+        return students.stream().map(Integer::doubleValue)
                 .reduce(0.0, Double::sum)/students.size();
     }
 

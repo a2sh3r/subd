@@ -3,6 +3,8 @@ package com.courses.subd;
 import com.courses.subd.dao.CourseDao;
 import com.courses.subd.dao.GroupDao;
 import com.courses.subd.dao.StudentDao;
+import com.courses.subd.model.Course;
+import com.courses.subd.model.Group;
 import com.courses.subd.model.Student;
 import com.courses.subd.service.MarkCalculatorService;
 import org.h2.tools.Console;
@@ -23,12 +25,26 @@ public class SubdApplication {
 	public static void main(String[] args) throws Exception{
 		ApplicationContext context = SpringApplication.run(SubdApplication.class);
 
+		StudentDao studentDao = context.getBean(StudentDao.class);
 		CourseDao courseDao = context.getBean(CourseDao.class);
 		GroupDao groupDao = context.getBean(GroupDao.class);
-		StudentDao studentDao = context.getBean(StudentDao.class);
 
-		
+		MarkCalculatorService markCalculatorService = new MarkCalculatorService(studentDao, courseDao, groupDao);
 
+		Group group = new Group(4L,"4th");
+		Course course = new Course(4L, "Physics");
+		Student student = new Student(6L, "Frolov", "Sashka", "Pavlovich", group, course, 4);
+
+		System.out.println(student.getStudentGroup());
+
+		courseDao.addCourse(course);
+		groupDao.addGroup(group);
+		studentDao.addStudent(student);
+
+
+		System.out.println(studentDao.getAllStudents());
+		System.out.println(studentDao.findByCourseAndGroup(3L, 1L));
+		System.out.println("Средняя оценка по Доте в группе 1 - " + markCalculatorService.CalculateMean("CS", "1st"));
 
 		Console.main(args);
 	}

@@ -4,6 +4,7 @@ import com.courses.subd.model.Course;
 import com.courses.subd.model.Group;
 import com.courses.subd.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -43,17 +44,30 @@ public class StudentDao {
     }
 
     public int addStudent(Student student) {
-        return jdbcTemplate.update("INSERT INTO STUDENTS VALUES (?, ?, ?, ?, ?, ?, ?)", student.getId(),
-                student.getSecondName(), student.getFirstName(), student.getBatyaName(), student.getStudentGroup(),
-                student.getCourses(), student.getMark());
+        GroupDao groupDao = new GroupDao();
+        final String query = "SELECT * FROM STUDENTGROUP WHERE NAME = ?";
+        if (jdbcTemplate.queryForObject(query, new Object[] { student.getStudentGroup().getName() }, new GroupRowMapper()) == null){
+            groupDao.addGroup(student.getStudentGroup());
+        }
+        return namedParameterJdbcTemplate.update(
+                "INSERT INTO STUDENTS (ID, SECOND_NAME, FIRST_NAME, BATYA_NAME, studentGroup, courses, MARK) VALUES (:id, :second_name, :first_name, :batya_name, :studentGroup, :courses, :mark)",
+                new MapSqlParameterSource()
+                        .addValue("id", student.getId())
+                        .addValue("second_name", student.getSecondName())
+                        .addValue("first_name", student.getFirstName())
+                        .addValue("batya_name", student.getBatyaName())
+                        .addValue("studentGroup", student.getStudentGroup().getGroupId())
+                        .addValue("courses", student.getCourses().getCourseId())
+                        .addValue("mark", student.getMark()));
+
     }
 
-    public List<Student> findByCourseAndGroup(Long courseId, Long groupId){
+    public List<Integer> findByCourseAndGroup(Long courseId, Long groupId){
         return namedParameterJdbcTemplate.queryForList(
-                "SELECT * FROM STUDENTS WHERE COURSE_ID = :courseId AND GROUP_ID = :groupId",
+                "SELECT MARK FROM STUDENTS WHERE courses = :courseId AND studentGroup = :groupId",
                 new MapSqlParameterSource()
                         .addValue("courseId", courseId)
-                        .addValue("groupId", groupId), Student.class);
+                        .addValue("groupId", groupId), Integer.class);
     }
 
 

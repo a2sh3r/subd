@@ -15,19 +15,14 @@ public class StudentRowMapper implements RowMapper<Student> {
         final Student student = new Student();
 
         final Group group = new Group();
-        group.setGroupId(rs.getLong("GROUP_ID"));
-
-        final Course course = new Course();
-        course.setCourseId(rs.getLong("COURSE_ID"));
-
-
+        group.setGroupId(rs.getLong("studentGroup"));
 
         student.setId(rs.getLong("ID"));
         student.setSecondName(rs.getString("SECOND_NAME"));
         student.setFirstName(rs.getString("FIRST_NAME"));
         student.setBatyaName(rs.getString("BATYA_NAME"));
         student.setStudentGroup(group);
-        student.setCourses(rs.getObject("COURSE_ID", Course.class));
+        student.setCourses(rs.getObject("courses", Course.class));
         student.setMark(rs.getInt("MARK"));
 
 
