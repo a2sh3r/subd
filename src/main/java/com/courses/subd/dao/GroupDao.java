@@ -4,7 +4,9 @@ import com.courses.subd.model.Course;
 import com.courses.subd.model.Group;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -32,8 +34,9 @@ public class GroupDao {
     }
 
     public Group findByName(String name){
-        final String query = "SELECT * FROM STUDENT_GROUP WHERE NAME = ?";
-        return jdbcTemplate.queryForObject(query, new Object[] { name }, new GroupRowMapper());
+        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("name", name);
+        return namedParameterJdbcTemplate.queryForObject(
+                "SELECT * FROM STUDENT_GROUP WHERE NAME = :name", namedParameters, Group.class);
     }
 
     public int getCountOfGroups() {
@@ -45,7 +48,7 @@ public class GroupDao {
     }
 
     public int addGroup(Group group) {
-        return jdbcTemplate.update("INSERT INTO STUDENT_GROUP VALUES (?, ?, ?)", group.getId(),
-                group.getName(), group.getStudentList());
+        return jdbcTemplate.update("INSERT INTO STUDENT_GROUP VALUES (?, ?, ?)", group.getGroupId(),
+                group.getName());
     }
 }

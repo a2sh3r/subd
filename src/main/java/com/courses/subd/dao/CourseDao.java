@@ -4,7 +4,9 @@ import com.courses.subd.model.Course;
 import com.courses.subd.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -33,8 +35,9 @@ public class CourseDao {
     }
 
     public Course findByName(String name){
-        final String query = "SELECT * FROM COURSE WHERE NAME = ?";
-        return jdbcTemplate.queryForObject(query, new Object[] { name }, new CourseRowMapper());
+        SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("name", name);
+        return namedParameterJdbcTemplate.queryForObject(
+                "SELECT * FROM COURSE WHERE NAME = :name", namedParameters, Course.class);
     }
 
     public int getCountOfCourses() {
@@ -46,8 +49,8 @@ public class CourseDao {
     }
 
     public int addCourse(Course course) {
-        return jdbcTemplate.update("INSERT INTO COURSE VALUES (?, ?, ?)", course.getId(),
-                course.getName(), course.getStudentId());
+        return jdbcTemplate.update("INSERT INTO COURSE VALUES (?, ?, ?)", course.getCourseId(),
+                course.getName());
     }
 
 

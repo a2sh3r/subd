@@ -1,6 +1,7 @@
 package com.courses.subd.dao;
 
 import com.courses.subd.model.Course;
+import com.courses.subd.model.Group;
 import com.courses.subd.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -48,8 +49,11 @@ public class StudentDao {
     }
 
     public List<Student> findByCourseAndGroup(Long courseId, Long groupId){
-        return jdbcTemplate.queryForList("SELECT * FROM STUDENTS WHERE COURSE_ID = ? AND GROUP_ID = ?",
-                                                        Student.class, new Object[] { courseId, groupId });
+        return namedParameterJdbcTemplate.queryForList(
+                "SELECT * FROM STUDENTS WHERE COURSE_ID = :courseId AND GROUP_ID = :groupId",
+                new MapSqlParameterSource()
+                        .addValue("courseId", courseId)
+                        .addValue("groupId", groupId), Student.class);
     }
 
 

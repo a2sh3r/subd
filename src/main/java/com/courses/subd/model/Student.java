@@ -9,33 +9,31 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "students")
+@Table(name = "STUDENTS")
 @Setter
 @Getter
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "second_name", nullable = false)
+    @Column(name = "SECOND_NAME", nullable = false)
     private String secondName;
-    @Column(name = "first_name",nullable = false)
+    @Column(name = "FIRST_NAME",nullable = false)
     private String firstName;
-    @Column(name = "batya_name",nullable = false)
+    @Column(name = "BATYA_NAME",nullable = false)
     private String batyaName;
 
 //    @Column(name = "group_name",nullable = false)
 //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 //    @JoinColumn(name = "studentId")
 //    private Group studentGroup;
-    @ManyToOne
-    @JoinColumn(name = "studentList")
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "groupId")
     private Group studentGroup;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "studentCourses",
-            joinColumns = @JoinColumn(name = "studentId"),
-            inverseJoinColumns = @JoinColumn(name = "courseId"))
-    private List<Course> courses;
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "courseId")
+    private Course courses;
 
     @Column(name = "mark")
     private Integer mark;

@@ -9,20 +9,19 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "students")
+@Table(name = "STUDENTGROUP")
 @Setter
 @Getter
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "groupId")
+    private Long groupId;
 
-    @Column(name = "name")
+    @Column(name = "NAME")
     private String name;
 
-//    @OneToOne(mappedBy = "studentGroup")
-//    private Student studentId;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "studentGroup")
-    private List<Student> studentList;
+    @OneToOne(mappedBy = "studentGroup")
+    private Student studentId;
+
 }

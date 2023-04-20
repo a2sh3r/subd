@@ -4,10 +4,16 @@ spring:
   sql:
     init:
       mode: always
-      data-locations: data.sql
-      schema-locations: schema.sql
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+    show-sql: true
   h2:
     console:
+      enabled: true
       path: /h2-console
       settings:
         web-allow-others: true

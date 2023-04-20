@@ -9,16 +9,18 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "course")
+@Table(name = "COURSE")
 @Setter
 @Getter
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "name")
+    @Column(name = "courseId")
+    private Long courseId;
+    @Column(name = "NAME")
     private String name;
 
-    @ManyToMany(mappedBy = "courses")
-    private List<Student> studentId;
+
+
+
 }

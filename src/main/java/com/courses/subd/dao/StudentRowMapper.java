@@ -15,10 +15,10 @@ public class StudentRowMapper implements RowMapper<Student> {
         final Student student = new Student();
 
         final Group group = new Group();
-        group.setId(rs.getLong("GROUP_ID"));
+        group.setGroupId(rs.getLong("GROUP_ID"));
 
         final Course course = new Course();
-        course.setId(rs.getLong("COURSE_ID"));
+        course.setCourseId(rs.getLong("COURSE_ID"));
 
 
 
@@ -27,7 +27,7 @@ public class StudentRowMapper implements RowMapper<Student> {
         student.setFirstName(rs.getString("FIRST_NAME"));
         student.setBatyaName(rs.getString("BATYA_NAME"));
         student.setStudentGroup(group);
-        student.setCourses(rs.getObject("COURSE_ID", ArrayList.class));
+        student.setCourses(rs.getObject("COURSE_ID", Course.class));
         student.setMark(rs.getInt("MARK"));
 
 
