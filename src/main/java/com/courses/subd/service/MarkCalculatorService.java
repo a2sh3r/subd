@@ -3,14 +3,7 @@ package com.courses.subd.service;
 import com.courses.subd.dao.CourseDao;
 import com.courses.subd.dao.GroupDao;
 import com.courses.subd.dao.StudentDao;
-import com.courses.subd.model.Course;
-import com.courses.subd.model.Group;
-import com.courses.subd.model.Student;
-import com.courses.subd.repository.CourseRepository;
-import com.courses.subd.repository.GroupRepository;
-import com.courses.subd.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

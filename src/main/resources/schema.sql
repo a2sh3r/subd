@@ -1,22 +1,26 @@
-create table COURSE(
-    courseId bigserial,
-    NAME varchar(8000),
-    primary key (courseId)
+CREATE TABLE students (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  last_name VARCHAR(255),
+  first_name VARCHAR(255),
+  batya_name VARCHAR(255),
+  group_id BIGINT,
+  grade INT
 );
 
-create table STUDENTGROUP(
-    groupId bigserial,
-    NAME varchar(8000),
-    primary key (groupId)
+CREATE TABLE courses (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(255)
 );
 
-create table STUDENTS(
-    ID bigserial,
-    SECOND_NAME varchar(255),
-    FIRST_NAME varchar(255),
-    BATYA_NAME varchar(255),
-    studentGroup bigint references STUDENTGROUP (groupId),
-    courses bigint references COURSE (courseId),
-    MARK bigint,
-    primary key (ID)
+CREATE TABLE student_course (
+  student_id BIGINT,
+  course_id BIGINT,
+  PRIMARY KEY(student_id, course_id),
+  FOREIGN KEY(student_id) REFERENCES students(id),
+  FOREIGN KEY(course_id) REFERENCES courses(id)
+);
+
+CREATE TABLE groups (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(255)
 );

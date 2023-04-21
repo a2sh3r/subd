@@ -3,8 +3,6 @@ package com.courses.subd.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Data
 @Entity
 @NoArgsConstructor
